@@ -5,9 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.lang.reflect.Type;
 
 /**
  * Created by edgar on 12/17/13.
@@ -16,7 +19,7 @@ public class GraphicView extends View {
     public Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     boolean moving = false;
     float pX, pY, rad;
-
+    Path path = new Path();
 
 
     public GraphicView(Context context) {
@@ -41,8 +44,35 @@ public class GraphicView extends View {
         canvas.drawText("Width x Height: " + width + "x" + height, 20, 40, paint); // Draw text
         paint.setColor(Color.GREEN);
         int minus = width>height ? height : width;
-        canvas.drawCircle(3*width/4, 3*height/4, minus/4, paint);
+        canvas.drawCircle(3 * width / 4, 3 * height / 4, minus / 4, paint);
+        path.addCircle(3 * width / 4, 3 * height / 4, minus / 4, Path.Direction.CW);
+        paint.setColor(Color.BLUE);
+        canvas.drawTextOnPath("Esto es una circunferencia", path, 0, 0, paint);
+        Path path = new Path();
+        path.addCircle(3*width/4, 3*height/4, minus/4, Path.Direction.CCW);
+        canvas.drawTextOnPath("Esto es una circunferencia", path, 0, -20, paint);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         //Draw a circle
+        Paint paint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint1.setColor(Color.GREEN);
+        paint1.setTextSize(20);
+        paint1.setTextSkewX(-0.5f);
+        paint1.setTypeface(Typeface.SANS_SERIF);
+        paint1.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText("Texto de prueba", width/4, 3*height/4, paint1);
+        Paint paint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint2.setColor(Color.BLUE);
+        paint2.setTextSize(20);
+        paint2.setTextSkewX(0.5f);
+        paint2.setTypeface(Typeface.MONOSPACE);
+        paint2.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText("Texto de prueba", width/4, (3*height/4)+20, paint2);
+        Paint paint3 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint3.setColor(Color.BLACK);
+        paint3.setTextSize(20);
+        paint3.setTextSkewX(1.5f);
+        paint3.setTypeface(Typeface.SERIF);
+        canvas.drawText("Texto de prueba", width/4, (3*height/4)+40, paint3);
         paint.setColor(Color.BLACK);
         if(pX<0){
             pX=3*width/4;
